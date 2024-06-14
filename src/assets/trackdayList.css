@@ -1,0 +1,176 @@
+:root {
+    --primary-color: #57ab27;
+    --secondary-color: #d5d5d5;
+    --danger-color: #f97066;
+    --muted-color: #707070;
+    --main-background: rgba(26, 26, 26);
+    --border-radius: 4px;
+    --txt-color: #fff;
+    --txt-color-on-primary: var(--txt-color);
+    --txt-color-on-secondary: rgba(0, 0, 0, 0.87);
+    --txt-color-on-danger: var(--txt-color);
+    --wizard-indicator-diameter: 2rem;
+    --wizard-indicator-width: 2px;
+    --wizard-indicator-active-color: var(--primary-color);
+    --wizard-indicator-done-color: var(--primary-color);
+    --wizard-indicator-default-color: var(--secondary-color);
+    --input-background-color: #1f1f1f;
+    --input-border-color: #707070;
+    --separator-color: #707070;
+    --error-text-color: #f97066;
+    --service-table-name-column-width: 160px;
+    --service-table-price-column-width: 170px;
+    --service-table-type-column-width: 150px;
+    --service-table-availability-column-width: 150px;
+    --service-table-amount-column-width: 200px;
+    --infobox-element-gap: 1rem;
+    --button-height: 42px;
+    --trackday-list-background-color: #1f1f1f;
+    --stripe-primary-color: var(--primary-color);
+    --stripe-input-background-color: var(--input-background-color);
+    --stripe-border-radius: var(--border-radius);
+    --stripe-text-color: var(--txt-color);
+    --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+    --stripe-font-family: var(--font-family);
+    --modal-container-background-color: rgba(0, 0, 0, 0.5);
+}
+* {
+    font-family: var(--font-family),serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background: var(--main-background);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+
+
+a,
+a:hover,
+a:visited {
+    color: var(--primary-color);
+}
+
+iframe {
+    border: none;
+    display: block;
+}
+.main-heading {
+    display: block;
+    font-weight: 600;
+    color: var(--txt-color);
+    line-height: 1.3;
+    font-style: italic;
+    margin: 0;
+}
+
+.text-muted {
+    color: var(--muted-color);
+}
+
+.background-container {
+    background-color: var(--trackday-list-background-color);
+}
+.cb-row {
+    display: flex;
+}
+.image-overlay {
+    padding: 50px 10% 100px 10%;
+    min-height: 450px;
+    height: 100%;
+    position: relative;
+    display: flex;
+}
+
+a,
+a:hover,
+a:visited {
+    color: var(--primary-color);
+}
+
+.main-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.text-overlay {
+    width: 100%;
+    z-index: 1;
+}
+
+.background-image.mobile {
+    display: block;
+}
+
+.background-image.mobile img {
+    width: 100%;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
+
+.relative {
+    position: relative;
+}
+
+@media screen and (min-width: 1024px) {
+    .background {
+        display: block;
+    }
+
+    .text-overlay {
+        width: 50%;
+    }
+
+    .background-image.mobile {
+        display: none;
+    }
+
+    .main-wrapper {
+        flex-direction: column;
+    }
+}
+
+.trackdays-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.trackdays-container.list {
+    color: var(--txt-color);
+}
+
+h4{
+    font-size: 1.5rem;
+    padding-top: 1rem;
+}
+.trackday-element-wrapper {
+    position: relative;
+}
+
+.d-flex{
+    display: flex;
+}
+.flex-column{
+    flex-direction: column;
+}
+.mb-4{
+    margin-bottom: 1.5rem;
+}
+.trackday-start-hour{
+    margin-right: 5px;
+}
