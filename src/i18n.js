@@ -31,8 +31,13 @@ const messages = {
     bookNow: 'Book now',
     trackday: 'Trackday',
     available_bookings: 'Available Bookings',
-    dateElapsed: "Date elapsed"
-    // Add other translations here
+    dateElapsed: "Date elapsed",
+    contactInformation: "Contact Information",
+    addVehicle: "Vehicle",
+    addService: "Add Services",
+    redeemVoucher: "Redeem voucher",
+    confirmation: "Confirmation",
+    payment: "Payment",
   },
   de: {
     sorryNoDateAvailable: "Leider sind aktuell keine Termine verfügbar.",
@@ -44,7 +49,13 @@ const messages = {
     bookNow: 'Jetzt buchen',
     trackday: 'Journée de piste',
     available_bookings: 'Réservations disponibles',
-    dateElapsed: "Datum abgelaufen"
+    dateElapsed: "Datum abgelaufen",
+    contactInformation: "Teilnehmer Details",
+    addVehicle: "Fahrzeug",
+    addService: "Zusatzleistungen",
+    redeemVoucher: "Gutschein einlösen",
+    confirmation: "Bestätigen",
+    payment: "Zahlung",
     // Add other translations here
   },
   // Add more languages here

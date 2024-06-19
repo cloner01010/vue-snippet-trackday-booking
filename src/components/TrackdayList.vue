@@ -67,7 +67,6 @@ export default {
   <div class="spinner" v-if="snippetStore.isFetching">
     <v-progress-circular size="70" color="green"  indeterminate ></v-progress-circular>
   </div>
-
   <div v-else class="main-wrapper cb-row relative">
     <div class="background background-extra" :style="backgroundStyle"></div>
     <div class="text-overlay text-overlay-extra">
@@ -83,11 +82,6 @@ export default {
             <h4>{{ $t('date') }}</h4>
 
             <div v-for="item in snippetStore.getTrackdayItems" :key="item.id" class="trackday-element-wrapper">
-
-              <a v-if="item.available_bookings > 0" class="trackday-element__link"
-                 href="#">
-              </a>
-
               <div class="d-flex flex-column mb-4 trackday-element">
                 <div class="trackday-date-container-normal">
                   <span class="trackday-start-date">{{ formatDate(item.time_start) }}</span>
@@ -109,9 +103,9 @@ export default {
                     - {{ $t('fullyBooked') }}
                   </div>
                   <div v-else>
-                    <a class="trackday-booking-link"
-                       href="#">
-                      {{ $t('bookNow') }}</a>
+                    <router-link class="trackday-booking-link" :to='{ path: `/trackdays/${lang}/${item.id}`, query: {sid: sid} }'>
+                      {{ $t('bookNow') }}
+                    </router-link>
                   </div>
                 </div>
 
@@ -143,3 +137,4 @@ export default {
 
 
 </style>
+
