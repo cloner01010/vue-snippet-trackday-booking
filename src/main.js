@@ -11,15 +11,21 @@ import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import ContactInfo from '@/components/ContactInfo.vue'
+
+library.add(faCalendarDays)
 
 const vuetify = createVuetify({
   components,
-  directives,
+  directives
 })
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: import.meta.env.VITE_API_URL,
+  uri: import.meta.env.VITE_API_URL
 })
 
 // Cache implementation
@@ -28,16 +34,18 @@ const cache = new InMemoryCache()
 // Create the apollo client
 const apolloClient = new ApolloClient({
   link: httpLink,
-  cache,
+  cache
 })
-
 
 const app = createApp({
-  setup () {
+  setup() {
     provide(DefaultApolloClient, apolloClient)
   },
-  render: () => h(App),
+  render: () => h(App)
 })
+
+app.component('font-awesome-icon', FontAwesomeIcon)
+app.component('contact-info', ContactInfo)
 
 app.use(createPinia())
 app.use(router)

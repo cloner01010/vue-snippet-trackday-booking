@@ -2,6 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useSnippetStore } from '@/stores/SnippetStore.js'
 import { useI18n } from 'vue-i18n'
+
 export default {
   name: 'TrackdayList',
   props: {
@@ -15,7 +16,7 @@ export default {
     }
   },
   setup(props) {
-    const { locale, d} = useI18n()
+    const { locale, d } = useI18n()
     const snippetStore = useSnippetStore()
 
     onMounted(() => {
@@ -42,7 +43,7 @@ export default {
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }
-      }else {
+      } else {
         return {
           backgroundColor: 'var(--trackday-list-background-color)',
           backgroundRepeat: 'no-repeat',
@@ -65,7 +66,7 @@ export default {
 
 <template>
   <div class="spinner" v-if="snippetStore.isFetching">
-    <v-progress-circular size="70" color="green"  indeterminate ></v-progress-circular>
+    <v-progress-circular size="70" color="green" indeterminate></v-progress-circular>
   </div>
   <div v-else class="main-wrapper cb-row relative">
     <div class="background background-extra" :style="backgroundStyle"></div>
@@ -75,7 +76,8 @@ export default {
           <div class="season_title concept-content" style="display: none;">
           </div>
           <div class="trackdays-container list">
-            <h1 v-if="snippetStore.getTrackdayItems.length === 0" class="main-heading">{{ $t('sorryNoDateAvailable')}}</h1>
+            <h1 v-if="snippetStore.getTrackdayItems.length === 0" class="main-heading">
+              {{ $t('sorryNoDateAvailable') }}</h1>
             <h4 class="concept-content-extra">
               {{ snippetStore.getSnippet?.trackday.name }}
             </h4>
@@ -103,7 +105,8 @@ export default {
                     - {{ $t('fullyBooked') }}
                   </div>
                   <div v-else>
-                    <router-link class="trackday-booking-link" :to='{ path: `/trackdays/${lang}/${item.id}`, query: {sid: sid} }'>
+                    <router-link class="trackday-booking-link"
+                                 :to='{ path: `/trackdays/${lang}/${item.id}`, query: {sid: sid} }'>
                       {{ $t('bookNow') }}
                     </router-link>
                   </div>

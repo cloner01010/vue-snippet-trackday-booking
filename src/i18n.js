@@ -1,63 +1,120 @@
 import { createI18n } from 'vue-i18n'
-const datetimeFormats = {
-  'en': {
-    short: {
-      year: 'numeric', month: 'short', day: 'numeric'
+
+const numberFormats = {
+  en: {
+    currency: {
+      style: 'currency',
+      currency: 'USD',
+      notation: 'standard',
+      currencyDisplay: 'symbol'
     },
-    long: {
-      year: 'numeric', month: 'short', day: 'numeric',
-      weekday: 'short', hour: 'numeric', minute: 'numeric'
+    decimal: {
+      style: 'decimal',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    },
+    percent: {
+      style: 'percent',
+      useGrouping: false
     }
   },
-  'de': {
+  de: {
+    currency: {
+      style: 'currency',
+      currency: 'EUR',
+      currencyDisplay: 'symbol'
+    },
+    decimal: {
+      style: 'decimal',
+      minimumSignificantDigits: 2,
+      maximumSignificantDigits: 2
+    },
+    percent: {
+      style: 'percent',
+      useGrouping: false
+    }
+  }
+}
+
+const datetimeFormats = {
+  en: {
     short: {
-      year: 'numeric', month: 'long', day: 'numeric'
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
     },
     long: {
-      year: 'numeric', month: 'long', day: 'numeric',
-      weekday: 'short', hour: 'numeric', minute: 'numeric'
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short',
+      hour: 'numeric',
+      minute: 'numeric'
+    }
+  },
+  de: {
+    short: {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    },
+    long: {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+      hour: 'numeric',
+      minute: 'numeric'
     }
   }
 }
 // Define your translations
 const messages = {
   en: {
-    sorryNoDateAvailable: "Sorry, no dates are currently available.",
-    date: "Dates",
-    hour: "",
-    freePlaces: "Free spots",
-    fullyBooked:" Fully booked",
+    sorryNoDateAvailable: 'Sorry, no dates are currently available.',
+    date: 'Dates',
+    hour: '',
+    freePlaces: 'Free spots',
+    fullyBooked: ' Fully booked',
     welcome: 'Welcome',
     bookNow: 'Book now',
     trackday: 'Trackday',
     available_bookings: 'Available Bookings',
-    dateElapsed: "Date elapsed",
-    contactInformation: "Contact Information",
-    addVehicle: "Vehicle",
-    addService: "Add Services",
-    redeemVoucher: "Redeem voucher",
-    confirmation: "Confirmation",
-    payment: "Payment",
+    dateElapsed: 'Date elapsed',
+    contactInformation: 'Contact Information',
+    addVehicle: 'Vehicle',
+    addService: 'Add Services',
+    redeemVoucher: 'Redeem voucher',
+    confirmation: 'Confirmation',
+    payment: 'Payment',
+    next: 'Next',
+    back: 'Back',
+    price: 'Price',
+    vatFooterNote: 'All prices are gross including the statutory value added tax.',
   },
   de: {
-    sorryNoDateAvailable: "Leider sind aktuell keine Termine verfügbar.",
-    date: "Termine",
-    hour: "Uhr",
-    fullyBooked:"Ausgebucht",
-    freePlaces: "Freie Plätze",
+    sorryNoDateAvailable: 'Leider sind aktuell keine Termine verfügbar.',
+    date: 'Termine',
+    hour: 'Uhr',
+    fullyBooked: 'Ausgebucht',
+    freePlaces: 'Freie Plätze',
     welcome: 'Bienvenue',
     bookNow: 'Jetzt buchen',
     trackday: 'Journée de piste',
     available_bookings: 'Réservations disponibles',
-    dateElapsed: "Datum abgelaufen",
-    contactInformation: "Teilnehmer Details",
-    addVehicle: "Fahrzeug",
-    addService: "Zusatzleistungen",
-    redeemVoucher: "Gutschein einlösen",
-    confirmation: "Bestätigen",
-    payment: "Zahlung",
+    dateElapsed: 'Datum abgelaufen',
+    contactInformation: 'Teilnehmer Details',
+    addVehicle: 'Fahrzeug',
+    addService: 'Zusatzleistungen',
+    redeemVoucher: 'Gutschein einlösen',
+    confirmation: 'Bestätigen',
+    payment: 'Zahlung',
+    next: 'Weiter',
+    back: 'Zurück',
+    price: 'Preis',
+    vatFooterNote:'Alle Preise verstehen sich brutto inkl. der gesetzlichen Mehrwertsteuer. '
     // Add other translations here
-  },
+  }
   // Add more languages here
 }
 
@@ -67,7 +124,8 @@ const i18n = createI18n({
   locale: 'en', // Set default locale
   fallbackLocale: 'en', // Set fallback locale
   messages, // Set translation messages
-  datetimeFormats
+  datetimeFormats,
+  numberFormats
 })
 
 export default i18n
