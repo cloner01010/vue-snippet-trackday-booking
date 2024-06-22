@@ -7,11 +7,24 @@ import { watch } from 'vue'
 export const useCountriesStore = defineStore('countries', {
   state: () => ({
     countries: [],
-    isFetching: false
+    isFetching: false,
   }),
   getters: {
-    getCountries: (state) => state.countries
-  },
+    getCountriesByLang: (state) => (lang) => {
+      return state.countries.map((country) => {
+        const translation = country.translations.find(
+          (translation) => translation.lang === lang
+        )
+        return {
+          title: translation ? translation.name : 'No translation available',
+          value: country.id,
+        }
+      })
+    },
+    getCountries:
+      (state) => state.countries
+  }
+  ,
   actions: {
     fetch() {
       const { result, loading, error } = useQuery(gql`
@@ -19,6 +32,10 @@ export const useCountriesStore = defineStore('countries', {
               countries {
                   id
                   name
+                  translations{
+                      lang
+                      name
+                  }
               }
           }
       `)

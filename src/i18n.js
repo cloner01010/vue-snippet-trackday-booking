@@ -91,6 +91,20 @@ const messages = {
     back: 'Back',
     price: 'Price',
     vatFooterNote: 'All prices are gross including the statutory value added tax.',
+    firstname: 'First name',
+    lastname: 'Last name',
+    street: 'Street',
+    streetNumber: 'Number',
+    zip: 'Zip',
+    city: 'City',
+    country: 'Country',
+    phone: 'Phone',
+    email: 'Email',
+    language: 'Language',
+    additional: 'Additional remarks',
+    hasInvoice: 'Different Invoice address',
+    companyName: 'Company name',
+    vatNumber: 'Vat number',
   },
   de: {
     sorryNoDateAvailable: 'Leider sind aktuell keine Termine verfügbar.',
@@ -112,10 +126,23 @@ const messages = {
     next: 'Weiter',
     back: 'Zurück',
     price: 'Preis',
-    vatFooterNote:'Alle Preise verstehen sich brutto inkl. der gesetzlichen Mehrwertsteuer. '
-    // Add other translations here
+    vatFooterNote: 'Alle Preise verstehen sich brutto inkl. der gesetzlichen Mehrwertsteuer. ',
+    firstname: 'Vorname',
+    lastname: 'Name',
+    street: 'Straße',
+    streetNumber: 'Hausnr',
+    zip: 'PLZ',
+    city: 'Ort',
+    country: 'Land',
+    phone: 'Telefon',
+    email: 'E-Mail-Adresse',
+    language: 'Sprache',
+    additional: 'Bemerkungen',
+    hasInvoice: 'Abweichende Rechnungsadresse',
+    companyName: 'Firmenname',
+    vatNumber: 'USt.-Nummer',
   }
-  // Add more languages here
+
 }
 
 // Create an i18n instance

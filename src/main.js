@@ -15,6 +15,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ContactInfo from '@/components/ContactInfo.vue'
+import apolloClient from '@/apolloClient.js'
 
 library.add(faCalendarDays)
 
@@ -22,20 +23,7 @@ const vuetify = createVuetify({
   components,
   directives
 })
-// HTTP connection to the API
-const httpLink = createHttpLink({
-  // You should use an absolute URL here
-  uri: import.meta.env.VITE_API_URL
-})
 
-// Cache implementation
-const cache = new InMemoryCache()
-
-// Create the apollo client
-const apolloClient = new ApolloClient({
-  link: httpLink,
-  cache
-})
 
 const app = createApp({
   setup() {

@@ -126,15 +126,6 @@ export default {
                   <v-card color="grey-lighten-1" height="200">Payment</v-card>
                 </v-stepper-window-item>
               </v-stepper-window>
-              <v-stepper-actions
-                disabled="false"
-                color="#57ab27"
-                :next-text="$t('next')"
-                :prev-text="$t('back')"
-                @click:next="next"
-                @click:prev="prev"
-              >
-              </v-stepper-actions>
             </template>
           </v-stepper>
         </v-sheet>
