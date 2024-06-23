@@ -105,6 +105,7 @@ const messages = {
     hasInvoice: 'Different Invoice address',
     companyName: 'Company name',
     vatNumber: 'Vat number',
+    required: 'You must enter a {property}',
   },
   de: {
     sorryNoDateAvailable: 'Leider sind aktuell keine Termine verfügbar.',
@@ -141,6 +142,7 @@ const messages = {
     hasInvoice: 'Abweichende Rechnungsadresse',
     companyName: 'Firmenname',
     vatNumber: 'USt.-Nummer',
+    required: '{property} ist erforderlich',
   }
 
 }

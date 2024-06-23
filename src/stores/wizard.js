@@ -4,23 +4,33 @@ import { provideApolloClient, useQuery } from '@vue/apollo-composable'
 import { watch } from 'vue'
 import { useMutation } from '@vue/apollo-composable'
 import apolloClient from '@/apolloClient.js'
-
-
+import { useSnippetStore } from '@/stores/SnippetStore.js'
 
 
 const CREATE_PARTICIPANT_MUTATION = gql`
     mutation createParticipant($input: UserInput!) {
         createParticipant(input: $input) {
             id
+            user {
+                id
+            }
+            booking {
+                id
+            }
         }
     }
 `
 
 export const useWizardStore = defineStore('wizard', {
   state: () => ({
+    currentStep: 1,
+    participantId: 0,
+    userId: 0,
+    bookingId: 0,
     data: [],
     wizardSteps: [],
     isFetching: false,
+    isWizardLoading: false,
     contactInfo: {
       trackday_item_id: null,
       firstname: null,
@@ -89,16 +99,34 @@ export const useWizardStore = defineStore('wizard', {
     }
   },
   actions: {
-     sendContactInfo() {
-      const { mutate: sendContactMutation } =
-       provideApolloClient(apolloClient)(() => useMutation(CREATE_PARTICIPANT_MUTATION))
-
+    nextStep() {
+      const snippetStore = useSnippetStore()
+      const totalSteps = this.getWizardSteps.length + (snippetStore.getSnippet?.has_payment ? 1 : 0)
+      if (this.currentStep < totalSteps) {
+        this.currentStep++
+      }
+    },
+    previousStep() {
+      if (this.currentStep > 1) {
+        this.currentStep--
+      }
+    },
+    async sendContactInfo() {
+      const { mutate: sendContactMutation, loading } = provideApolloClient(apolloClient)(() =>
+        useMutation(CREATE_PARTICIPANT_MUTATION)
+      )
       try {
-        const response =  sendContactMutation({
+        const response = await sendContactMutation({
           input: this.contactInfo
         })
-        console.log(response)
-        return response
+        this.isWizardLoading = loading
+        if (response.data) {
+          this.participantId = response.data.createParticipant.id
+          this.userId = response.data.createParticipant.user.id
+          this.bookingId = response.data.createParticipant.booking.id
+        } else {
+          throw new Error('No data returned from mutation')
+        }
       } catch (error) {
         console.error('Error sending contact info:', error)
         throw error
@@ -146,6 +174,6 @@ export const useWizardStore = defineStore('wizard', {
         console.error('Error fetching data:', error.value)
       }
     }
-  },
+  }
 
 })

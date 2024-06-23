@@ -4,6 +4,7 @@ import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useSnippetStore } from '@/stores/SnippetStore.js'
 import ContactInfo from '@/components/ContactInfo.vue'
+import { storeToRefs } from 'pinia'
 
 
 export default {
@@ -27,6 +28,8 @@ export default {
     const { locale } = useI18n()
     const wizardStore = useWizardStore()
     const snippetStore = useSnippetStore()
+    const {currentStep}  = storeToRefs(wizardStore)
+    const {participantId, userId, bookingId} = storeToRefs(wizardStore)
 
     const formatDate = (dateStr) => {
       const date = new Date(dateStr)
@@ -52,6 +55,10 @@ export default {
       locale.value = props.lang
     })
     return {
+      participantId,
+      userId,
+      bookingId,
+      currentStep,
       snippetStore,
       wizardStore,
       formatDate,
@@ -74,8 +81,7 @@ export default {
     <v-row class="wizard-row" justify="center">
       <v-col class="wizard-container" xl="9" lg="8" md="7" sm="12" xs="12">
         <v-sheet color="transparent" class="wizard-sheet">
-          <v-stepper theme="dark" class="stepper">
-            <template v-slot:default="{ prev, next }">
+          <v-stepper v-model="currentStep" theme="dark" class="stepper">
               <v-stepper-header class="wizard-header">
                 <template v-for="(step, index) in wizardStore.getWizardSteps" :key="index">
                   <v-divider v-if="index"></v-divider>
@@ -98,7 +104,11 @@ export default {
                   v-if="wizardStore.getWizardSteps.includes('addVehicle')"
                   :value="2"
                 >
-                  <v-card color="grey-lighten-1" height="200"> Vehicle</v-card>
+                  <v-card color="grey-lighten-1" height="200">
+                    {{participantId}} <br>
+                    {{userId}}<br>
+                    {{bookingId}}
+                  </v-card>
                 </v-stepper-window-item>
 
                 <v-stepper-window-item
@@ -126,7 +136,6 @@ export default {
                   <v-card color="grey-lighten-1" height="200">Payment</v-card>
                 </v-stepper-window-item>
               </v-stepper-window>
-            </template>
           </v-stepper>
         </v-sheet>
       </v-col>
