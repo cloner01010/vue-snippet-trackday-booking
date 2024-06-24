@@ -14,7 +14,7 @@ export const useSnippetStore = defineStore('snipppet', {
     getTrackdayItems: (state) => {
       const snippet = state.snippet?.snippetByExternalID
       return snippet?.trackday?.trackdayItems || []
-    }
+    },
   },
   actions: {
     fetch(snippet_external_id) {

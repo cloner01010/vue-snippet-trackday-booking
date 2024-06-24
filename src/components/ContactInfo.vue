@@ -11,8 +11,13 @@ import requiredFields from '@/rules.js'
 
 
 export default {
-
-  setup() {
+  props: {
+    eventID: {
+      type: String,
+      required: true
+    }
+  },
+  setup(props) {
     const form = ref()
     const { locale } = useI18n()
     const WizardStore = useWizardStore()
@@ -31,7 +36,7 @@ export default {
       try {
         const { valid } = await form.value.validate()
         if(valid){
-          contactInfo.value.trackday_item_id = 4
+          contactInfo.value.trackday_item_id = props.eventID
           sendContactInfo()
           nextStep()
         }
@@ -63,7 +68,7 @@ export default {
   <div class="spinner" v-if="isWizardLoading">
     <v-progress-circular size="70" color="green" indeterminate></v-progress-circular>
   </div>
-  <v-form v-else @submit.prevent="submitForm" ref="form" fast-fail>
+  <v-form v-else @submit.prevent="submitForm" ref="form">
     <v-container>
       <v-row>
         <v-col md="6" sm="12">

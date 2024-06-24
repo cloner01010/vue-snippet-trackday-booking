@@ -106,6 +106,15 @@ const messages = {
     companyName: 'Company name',
     vatNumber: 'Vat number',
     required: 'You must enter a {property}',
+    type: 'Type',
+    make: 'Make',
+    model: 'Model',
+    constructionYear: 'Construction Year',
+    total: 'Total',
+    serviceName:'Service name',
+    priceType:'Price Type',
+    availability:'Availability',
+    amount:'Amount',
   },
   de: {
     sorryNoDateAvailable: 'Leider sind aktuell keine Termine verfügbar.',
@@ -143,6 +152,15 @@ const messages = {
     companyName: 'Firmenname',
     vatNumber: 'USt.-Nummer',
     required: '{property} ist erforderlich',
+    type: 'Typ',
+    make: 'Marke',
+    model: 'Modell',
+    constructionYear: 'Baujahr',
+    total: 'Gesamt',
+    serviceName:'Leistung',
+    priceType:'Preistyp',
+    availability:'Verfügbarkeit',
+    amount:'Menge',
   }
 
 }

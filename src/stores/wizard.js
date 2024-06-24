@@ -23,7 +23,7 @@ const CREATE_PARTICIPANT_MUTATION = gql`
 
 export const useWizardStore = defineStore('wizard', {
   state: () => ({
-    currentStep: 1,
+    currentStep: 3,
     participantId: 0,
     userId: 0,
     bookingId: 0,
@@ -60,6 +60,28 @@ export const useWizardStore = defineStore('wizard', {
   }),
 
   getters: {
+    getServicesByLang: (state) => (lang) => {
+      return state.data?.trackdayItemByID.services.map((service) => {
+        const translation = service.translations.find(
+          (translation) => translation.lang === lang
+        )
+        return {
+          id: service.id,
+          name: translation ? translation.name : service.name,
+          price: new Intl.NumberFormat('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }).format(service.price.price_gross),
+          priceType: service.price_type,
+          availability: service.amount_available_per_participant,
+          daysBefore: service.days_not_bookable_before,
+          currency: service.price.currency.unit
+        }
+      })
+    },
+    getServices: (state) => {
+      return state.data?.trackdayItemByID.services || []
+    },
     getContactInfo(state) {
       return state.contactInfo
     },
@@ -157,6 +179,20 @@ export const useWizardStore = defineStore('wizard', {
                     }
                     services {
                         id
+                        name
+                        price {
+                            price_gross
+                            currency{
+                                unit
+                            }
+                        }
+                        price_type
+                        amount_available_per_participant
+                        days_not_bookable_before
+                        translations {
+                            name
+                            lang
+                        }
                     }
                 }
             }

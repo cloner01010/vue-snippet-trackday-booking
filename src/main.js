@@ -11,12 +11,16 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCalendarDays } from '@fortawesome/free-regular-svg-icons'
+import { faCalendarDays} from '@fortawesome/free-regular-svg-icons'
+import { faCar} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import ContactInfo from '@/components/ContactInfo.vue'
 import apolloClient from '@/apolloClient.js'
+import VehicleInfo from '@/components/VehicleInfo.vue'
+import AddService from '@/components/AddService.vue'
 
 library.add(faCalendarDays)
+library.add(faCar)
 
 const vuetify = createVuetify({
   components,
@@ -33,6 +37,8 @@ const app = createApp({
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.component('contact-info', ContactInfo)
+app.component('vehicle-info', VehicleInfo)
+app.component('add-service', AddService)
 
 app.use(createPinia())
 app.use(router)
