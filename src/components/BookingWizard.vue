@@ -239,6 +239,36 @@ export default {
 </template>
 
 <style scoped>
+@media (min-width: 992px) {
+  .wizard-row {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wizard-row {
+    max-width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1400px) {
+  .wizard-row {
+    max-width: 1320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .wizard-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 .v-stepper {
   height: 100%;
 }
@@ -256,6 +286,7 @@ export default {
   overflow: visible;
 
 }
+
 
 
 .wizard-sheet {
