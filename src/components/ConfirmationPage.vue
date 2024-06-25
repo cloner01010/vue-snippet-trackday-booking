@@ -1,13 +1,17 @@
 <script>
 
 
-import { onMounted } from 'vue'
+import { onBeforeMount, onMounted } from 'vue'
 
 import { useWizardStore } from '@/stores/wizard.js'
 
 
 export default {
   props: {
+    action: {
+      type: Boolean,
+      required: true
+    },
     participantId: {
       type: String,
       required: true
@@ -37,7 +41,8 @@ export default {
     return {
       wizardStore,
       previousStep,
-      nextStep
+      nextStep,
+      ...props
     }
   }
 }
@@ -51,7 +56,7 @@ export default {
     <v-row xl="12" md="12" sm="6"><h3>{{ $t('participantDetails') }}</h3></v-row>
     <v-row xl="12" md="12" sm="6">
       <v-col>
-        <v-text-field variant="solo" :label="$t('firstname')" readonly flat
+        <v-text-field  variant="solo" :label="$t('firstname')" readonly flat
                       :model-value="wizardStore.getParticipant.address.firstname"></v-text-field>
       </v-col>
       <v-col>
@@ -156,13 +161,14 @@ export default {
                       :model-value="wizardStore.getParticipant.invoice_address.email"></v-text-field>
       </v-col>
     </v-row>
-    <v-row justify="space-between" class="action-btn">
-      <v-col color="green" class="back-btn" cols="2">
+    <v-row v-if="action" justify="space-between" class="action-btn">
+      <v-col color="green" class="back-btn" cols="3">
         <v-btn @click="previousStep()" :text="$t('back')" variant="elevated" rounded="lg" size="x-large"
                color="#d5d5d5"></v-btn>
       </v-col>
-      <v-col @click="nextStep()" color="#57ab27" class="next-btn" cols="2">
-
+      <v-col color="#57ab27" class="next-btn" cols="3">
+        <v-btn @click="nextStep" :text="$t('gotoPayment')" variant="elevated" rounded="lg" size="x-large"
+                color="#57ab27"></v-btn>
       </v-col>
     </v-row>
   </v-container>

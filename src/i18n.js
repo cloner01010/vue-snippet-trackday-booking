@@ -121,7 +121,8 @@ const messages = {
     invoiceAddress: 'Invoice address',
     participantDetails: 'Participant details',
     gotoPayment: 'Proceed to payment',
-    payNow: 'Pay now'
+    payNow: 'Pay now',
+    bookingSuccessMsg: 'Thank you very much for your booking ',
   },
   de: {
     sorryNoDateAvailable: 'Leider sind aktuell keine Termine verfügbar.',
@@ -174,7 +175,8 @@ const messages = {
     invoiceAddress: 'Rechnungsadresse',
     participantDetails: 'Teilnehmer',
     gotoPayment: 'Weiter zur Zahlung',
-    payNow: 'Kostenpflichtig buchen'
+    payNow: 'Kostenpflichtig buchen',
+    bookingSuccessMsg: 'Vielen Dank für Ihre Buchung ',
   }
 
 }

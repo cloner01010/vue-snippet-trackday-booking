@@ -27,7 +27,30 @@ import { useI18n } from 'vue-i18n'
 import { useWizardStore } from '@/stores/wizard.js'
 
 export default {
-  setup() {
+  props: {
+    participantId: {
+      type: String,
+      required: true
+    },
+    bookingId: {
+      type: String,
+      required: true
+    },
+    userId: {
+      type: String,
+      required: true
+    },
+    eventId: {
+      type: String,
+      required: true
+    },
+    sid: {
+      type: String,
+      required: true
+    },
+
+  },
+  setup(props) {
     const {locale} = useI18n()
     const wizardStore = useWizardStore()
     const {previousStep} = wizardStore
@@ -51,7 +74,7 @@ export default {
     const stripeKey = ref('pk_test_e4wtZSZOABPer3wrFCwB9J0g') // test key
     const stripe = Stripe(stripeKey.value);
     const elements = stripe.elements({
-      clientSecret: "pi_3PVTDbESvnAiMlQ61xXhvdb0_secret_nyh9T5ZYpLIlFPkN9bWhNLZaS",
+      clientSecret: "pi_3PVX0lESvnAiMlQ61FuLYFfU_secret_dUwqLBwEaaTfgVTVPJojmSO2U",
       appearance,
       locale: locale.value
     });
@@ -70,7 +93,7 @@ export default {
         //redirect: 'if_required',
         confirmParams: {
           // Make sure to change this to your payment completion page
-          return_url: "https://google.com",
+          return_url: `${window.location.origin}/trackdays/${props.eventId}/participant/${props.participantId}/booking/${props.bookingId}/user/${props.userId}/success/${locale.value}?sid=${props.sid}`,
         },
       });
     }

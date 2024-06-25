@@ -156,13 +156,15 @@ export default {
               >
                 <confirmation-page :booking-id="wizardStore.bookingId" :event-id="eventID"
                                    :participant-id="wizardStore.participantId"
-                                   :user-id="wizardStore.userId"></confirmation-page>
+                                   :user-id="wizardStore.userId" :action="true"></confirmation-page>
               </v-stepper-window-item>
               <v-stepper-window-item
                 :value="wizardStore.getWizardSteps.length + 1"
                 v-if="snippetStore.getSnippet?.has_payment"
               >
-               <payment-intent></payment-intent>
+                <payment-intent :sid="sid" :booking-id="wizardStore.bookingId" :event-id="eventID"
+                                :participant-id="wizardStore.participantId"
+                                :user-id="wizardStore.userId"></payment-intent>
               </v-stepper-window-item>
             </v-stepper-window>
           </v-stepper>
@@ -269,24 +271,27 @@ export default {
     align-items: center;
   }
 }
+
 .v-stepper {
   height: 100%;
 }
-.w-container{
+
+.w-container {
   width: 100%;
   max-width: 100%;
 }
+
 .wizard-summary {
   position: sticky;
   top: 24px;
   max-height: calc(100vh - 48px);
   margin-top: 0;
 }
+
 .wizard-container {
   overflow: visible;
 
 }
-
 
 
 .wizard-sheet {
@@ -317,7 +322,6 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 
 
 .wizard-summary .infobox {

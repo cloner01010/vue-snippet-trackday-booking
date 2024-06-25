@@ -49,7 +49,7 @@ export const useWizardStore = defineStore('wizard', {
       currency: ''
     },
     services: [],
-    currentStep: 6,
+    currentStep: 1,
     participantId: null,
     userId: null,
     bookingId: null,
@@ -113,7 +113,7 @@ export const useWizardStore = defineStore('wizard', {
           )
           const s = {
             id: service.id,
-            name: translation.name ? translation.name : service.name,
+            name: translation !== undefined && translation.name ? translation.name : service.name,
             price: new Intl.NumberFormat('en-US', {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2

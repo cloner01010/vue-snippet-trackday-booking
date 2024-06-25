@@ -81,7 +81,70 @@ export default {
 </script>
 
 <template>
+  <v-sheet class="infobox px-3 py-4" rounded="true">
+  <div class="infobox-trackday-name">
+    <h4 class="pa-0">{{ wizardStore.getTrackdayItem?.trackday_name }}</h4>
+  </div>
 
+  <div class="infobox-row infobox-trackday-date mx-1 py-4">
+    <font-awesome-icon :icon="['far', 'calendar-days']" style="color: #ffffff" />
+    <span class="mx-2">
+              {{ formatDate(wizardStore.getTrackdayItem?.date_start) }} -
+              {{ formatDate(wizardStore.getTrackdayItem?.date_end) }}</span
+    >
+  </div>
+  <div class="infobox-trackday-event-name">
+    <h4 class="pa-0">{{ wizardStore.getTrackdayItem?.name }}</h4>
+  </div>
+  <div v-if="isVehicleInfoComplete" class="infobox-row infobox-trackday-vehicle my-4 mx-1">
+    <font-awesome-icon :icon="['fas', 'car']" style="color: #ffffff;" />
+    <div>{{ `${addedVehicle.make} ${addedVehicle.model} ${addedVehicle.year}` }}</div>
+  </div>
+  <ul class="pt-4">
+    <li class="infobox-list-item infobox-price-item">
+      <div class="infobox-list-item-label infobox-price-item-label">{{ $t('price') }}</div>
+      <div class="infobox-list-item-value infobox-price-item-value">
+        {{ price }}
+      </div>
+    </li>
+
+    <template v-for="service in addedService" :key="service.id">
+      <li class="infobox-list-item-wrapper">
+        <div
+          class="infobox-list-item infobox-service-item">
+          <div
+            class="infobox-list-item-label infobox-service-item-label">{{ `${service.amount}` }}x
+          </div>
+          <div
+            class="infobox-list-item-value infobox-service-item-value">{{ `${service.price} ${service.currency}`
+            }}
+          </div>
+        </div>
+      </li>
+    </template>
+    <p class="coupon-header">{{ $t('coupon') }}</p>
+    <li v-for="coupon in redeemedCoupons" :key="coupon.id"
+        class="infobox-list-item infobox-coupon-item">
+      <div
+        class="infobox-list-item-label infobox-coupon-item-label"><span
+        id="couponCode">{{ `${$t('coupon')}: ${coupon.name}` }}</span></div>
+      <div
+        class="infobox-list-item-value infobox-coupon-item-value">{{ `-${coupon.price} ${totalPrice.currency}`
+        }}
+      </div>
+    </li>
+
+    <li v-if="participantId" class="infobox-list-item infobox-total-item mb-4">
+      <div class="infobox-list-item-label infobox-total-item-label">{{ $t('total') }}</div>
+      <div class="infobox-list-item-value infobox-total-item-value">
+        <span id="totalPriceValue">{{ total }}</span>
+      </div>
+    </li>
+  </ul>
+  <div id="vatFooterNote " class="vatFooterNote">
+    {{ $t('vatFooterNote') }}
+  </div>
+  </v-sheet>
 </template>
 
 <style scoped>
