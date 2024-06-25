@@ -8,11 +8,13 @@ import { storeToRefs } from 'pinia'
 import VehicleInfo from '@/components/VehicleInfo.vue'
 import { useMotoDBStore } from '@/stores/motoDB.js'
 import AddService from '@/components/AddService.vue'
+import { useServicesStore } from '@/stores/services.js'
+import PaymentIntent from '@/components/PaymentIntent.vue'
 
 
 export default {
   name: 'BookingWizard',
-  components: { AddService, VehicleInfo, ContactInfo },
+  components: { PaymentIntent, AddService, VehicleInfo, ContactInfo },
   props: {
     lang: {
       type: String,
@@ -32,12 +34,14 @@ export default {
     const wizardStore = useWizardStore()
     const snippetStore = useSnippetStore()
     const motoDBStore = useMotoDBStore()
-    const {addedVehicle} = storeToRefs(motoDBStore)
-    const { currentStep } = storeToRefs(wizardStore)
+    const serviceStore = useServicesStore()
+    const { addedVehicle } = storeToRefs(motoDBStore)
+    const { addedService } = storeToRefs(serviceStore)
+    const { currentStep, totalPrice, redeemedCoupons } = storeToRefs(wizardStore)
     const { participantId, userId, bookingId } = storeToRefs(wizardStore)
     const isVehicleInfoComplete = computed(() => {
-      return addedVehicle.value.make.trim() !== '' && addedVehicle.value.model.trim() !== '';
-    });
+      return addedVehicle.value.make.trim() !== '' && addedVehicle.value.model.trim() !== ''
+    })
     const formatDate = (dateStr) => {
       const date = new Date(dateStr)
       const day = date.getDate()
@@ -48,22 +52,36 @@ export default {
     const price = computed(() => {
       return wizardStore.getPrice + ' ' + wizardStore.getCurrency
     })
-
-    const formattedNumber = computed(() => {
+    const total = computed(() => {
       return new Intl.NumberFormat('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
-      }).format()
+      }).format(totalPrice.value.value) + ' ' + totalPrice.value.currency
+    })
+
+
+    const formattedNumber = computed((number) => {
+      return new Intl.NumberFormat('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(number)
     })
 
     onMounted(() => {
+      let stripeScript = document.createElement('script')
+      stripeScript.setAttribute('src', 'https://js.stripe.com/v3/')
+      document.head.appendChild(stripeScript)
       snippetStore.fetch(props.sid)
       wizardStore.fetchTrackdayEvent(props.eventID)
       locale.value = props.lang
     })
     return {
+      totalPrice,
+      redeemedCoupons,
+      total,
       isVehicleInfoComplete,
       addedVehicle,
+      addedService,
       participantId,
       userId,
       bookingId,
@@ -83,7 +101,7 @@ export default {
   <div class="spinner" v-if="wizardStore.isFetching">
     <v-progress-circular size="70" color="green" indeterminate></v-progress-circular>
   </div>
-  <v-container theme="dark" v-else>
+  <v-container class="w-container" theme="dark" v-else>
     <v-row justify="center"
     ><h1 class="main-heading">{{ wizardStore?.getTrackdayItem?.name }}</h1></v-row
     >
@@ -121,25 +139,30 @@ export default {
                 v-if="wizardStore.getWizardSteps.includes('addService')"
                 :value="wizardStore.getWizardSteps.indexOf('addService') + 1"
               >
-                <add-service></add-service>
+                <add-service :booking-id="wizardStore.bookingId" :event-id="eventID"
+                             :participant-id="wizardStore.participantId" :user-id="wizardStore.userId"></add-service>
               </v-stepper-window-item>
               <v-stepper-window-item
                 v-if="wizardStore.getWizardSteps.includes('redeemVoucher')"
                 :value="wizardStore.getWizardSteps.indexOf('redeemVoucher') + 1"
               >
-                <v-card color="grey-lighten-1" height="200"> Voucher</v-card>
+                <redeem-voucher :booking-id="wizardStore.bookingId" :event-id="eventID"
+                                :participant-id="wizardStore.participantId"
+                                :user-id="wizardStore.userId"></redeem-voucher>
               </v-stepper-window-item>
               <v-stepper-window-item
                 v-if="wizardStore.getWizardSteps.includes('confirmation')"
                 :value="wizardStore.getWizardSteps.indexOf('confirmation') + 1"
               >
-                <v-card color="grey-lighten-1" height="200"> confirmation</v-card>
+                <confirmation-page :booking-id="wizardStore.bookingId" :event-id="eventID"
+                                   :participant-id="wizardStore.participantId"
+                                   :user-id="wizardStore.userId"></confirmation-page>
               </v-stepper-window-item>
               <v-stepper-window-item
                 :value="wizardStore.getWizardSteps.length + 1"
                 v-if="snippetStore.getSnippet?.has_payment"
               >
-                <v-card color="grey-lighten-1" height="200">Payment</v-card>
+               <payment-intent></payment-intent>
               </v-stepper-window-item>
             </v-stepper-window>
           </v-stepper>
@@ -161,7 +184,7 @@ export default {
           <div class="infobox-trackday-event-name">
             <h4 class="pa-0">{{ wizardStore.getTrackdayItem?.name }}</h4>
           </div>
-          <div v-if="isVehicleInfoComplete" class="infobox-row infobox-trackday-vehicle my-4 mx-1" >
+          <div v-if="isVehicleInfoComplete" class="infobox-row infobox-trackday-vehicle my-4 mx-1">
             <font-awesome-icon :icon="['fas', 'car']" style="color: #ffffff;" />
             <div>{{ `${addedVehicle.make} ${addedVehicle.model} ${addedVehicle.year}` }}</div>
           </div>
@@ -173,13 +196,36 @@ export default {
               </div>
             </li>
 
-            <!-- <span id="serviceSection" style="display: none"></span>
-            <span id="couponSection" style="display: none"></span>
-            -->
-             <li v-if="participantId" class="infobox-list-item infobox-total-item mb-4">
+            <template v-for="service in addedService" :key="service.id">
+              <li class="infobox-list-item-wrapper">
+                <div
+                  class="infobox-list-item infobox-service-item">
+                  <div
+                    class="infobox-list-item-label infobox-service-item-label">{{ `${service.amount}` }}x
+                  </div>
+                  <div
+                    class="infobox-list-item-value infobox-service-item-value">{{ `${service.price} ${service.currency}`
+                    }}
+                  </div>
+                </div>
+              </li>
+            </template>
+            <p class="coupon-header">{{ $t('coupon') }}</p>
+            <li v-for="coupon in redeemedCoupons" :key="coupon.id"
+                class="infobox-list-item infobox-coupon-item">
+              <div
+                class="infobox-list-item-label infobox-coupon-item-label"><span
+                id="couponCode">{{ `${$t('coupon')}: ${coupon.name}` }}</span></div>
+              <div
+                class="infobox-list-item-value infobox-coupon-item-value">{{ `-${coupon.price} ${totalPrice.currency}`
+                }}
+              </div>
+            </li>
+
+            <li v-if="participantId" class="infobox-list-item infobox-total-item mb-4">
               <div class="infobox-list-item-label infobox-total-item-label">{{ $t('total') }}</div>
               <div class="infobox-list-item-value infobox-total-item-value">
-                <span id="totalPriceValue">{{ price }}</span>
+                <span id="totalPriceValue">{{ total }}</span>
               </div>
             </li>
           </ul>
@@ -193,39 +239,27 @@ export default {
 </template>
 
 <style scoped>
+.v-stepper {
+  height: 100%;
+}
+.w-container{
+  width: 100%;
+  max-width: 100%;
+}
+.wizard-summary {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  margin-top: 0;
+}
 .wizard-container {
   overflow: visible;
+
 }
 
-@media (min-width: 992px) {
-  .wizard-row {
-    max-width: 960px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
 
-@media (min-width: 1200px) {
-  .wizard-row {
-    max-width: 1140px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-@media (min-width: 1400px) {
-  .wizard-row {
-    max-width: 1320px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-@media (max-width: 600px) {
-  .wizard-row {
-    flex-direction: column;
-    align-items: center;
-  }
+.wizard-sheet {
+  height: 100%;
 }
 
 .spinner {
@@ -253,12 +287,7 @@ export default {
   flex-direction: column;
 }
 
-.wizard-summary {
-  position: sticky;
-  top: 24px;
-  max-height: calc(100vh - 48px);
-  margin-top: 0;
-}
+
 
 .wizard-summary .infobox {
   background-color: var(--primary-color) !important;
@@ -279,13 +308,15 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.infobox-trackday-vehicle{
+
+.infobox-trackday-vehicle {
   color: var(--txt-color);
   display: flex;
   gap: 0.5rem;
   align-items: center;
   font-size: 0.875rem;
 }
+
 .infobox ul {
   color: var(--txt-color);
   padding: 0;
@@ -293,7 +324,8 @@ export default {
   flex-direction: column;
   gap: var(--infobox-element-gap);
 }
-.infobox-total-item{
+
+.infobox-total-item {
   font-weight: bold;
 }
 
@@ -311,4 +343,13 @@ export default {
   color: var(--txt-color);
   font-size: 1rem;
 }
+
+.coupon-header {
+  font-size: 0.875rem;
+}
+
+ul {
+  list-style-type: none;
+}
+
 </style>

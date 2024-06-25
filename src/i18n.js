@@ -115,6 +115,13 @@ const messages = {
     priceType:'Price Type',
     availability:'Availability',
     amount:'Amount',
+    __PER_EVENT__: 'Per event',
+    apply: 'apply',
+    coupon:'Coupon',
+    invoiceAddress: 'Invoice address',
+    participantDetails: 'Participant details',
+    gotoPayment: 'Proceed to payment',
+    payNow: 'Pay now'
   },
   de: {
     sorryNoDateAvailable: 'Leider sind aktuell keine Termine verfügbar.',
@@ -161,6 +168,13 @@ const messages = {
     priceType:'Preistyp',
     availability:'Verfügbarkeit',
     amount:'Menge',
+    __PER_EVENT__: 'Pro Verantstaltung',
+    apply: 'anwenden',
+    coupon:'Gutschein',
+    invoiceAddress: 'Rechnungsadresse',
+    participantDetails: 'Teilnehmer',
+    gotoPayment: 'Weiter zur Zahlung',
+    payNow: 'Kostenpflichtig buchen'
   }
 
 }
