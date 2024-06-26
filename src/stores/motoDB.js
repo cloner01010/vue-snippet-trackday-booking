@@ -66,7 +66,7 @@ export const useMotoDBStore = defineStore('motoDB', {
     getYearsSelect() {
       const currentYear = new Date().getFullYear()
       const years = []
-      for (let year = 1960; year <= currentYear; year++) {
+      for (let year = currentYear; year >= 1960 ; year--) {
         years.push({
           title: year.toString(),
           value: year

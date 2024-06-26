@@ -35,7 +35,7 @@ export default {
     const submitForm = async () => {
       try {
         const { valid } = await form.value.validate()
-        if(valid){
+        if (valid) {
           contactInfo.value.trackday_item_id = props.eventID
           sendContactInfo()
           nextStep()
@@ -48,6 +48,7 @@ export default {
 
     onMounted(() => {
       CountryStore.fetch()
+      contactInfo.value.lang = locale.value
     })
     return {
       form,
@@ -58,7 +59,8 @@ export default {
       CountryStore,
       countries,
       languages,
-      contactInfo
+      contactInfo,
+      locale
     }
   }
 }
@@ -93,7 +95,8 @@ export default {
       </v-row>
       <v-row>
         <v-col md="6" sm="12">
-          <v-text-field :label="$t('zip')" v-model="contactInfo.zip" variant="outlined" color="#57ab27" :rules="[requiredFieldRules($t('zip'))]"></v-text-field>
+          <v-text-field :label="$t('zip')" v-model="contactInfo.zip" variant="outlined" color="#57ab27"
+                        :rules="[requiredFieldRules($t('zip'))]"></v-text-field>
         </v-col>
         <v-col md="6" sm="12">
           <v-text-field :label="$t('city')" v-model="contactInfo.city" variant="outlined"
@@ -180,7 +183,8 @@ export default {
         <v-row>
           <v-col md="6" sm="12">
             <v-autocomplete :label="$t('country')" v-model="contactInfo.invoice_country_id" :items="countries"
-                            variant="outlined" color="#57ab27" :rules="[requiredFieldRules($t('country'))]"></v-autocomplete>
+                            variant="outlined" color="#57ab27"
+                            :rules="[requiredFieldRules($t('country'))]"></v-autocomplete>
           </v-col>
           <v-col md="6" sm="12">
             <v-text-field :label="$t('email')" v-model="contactInfo.invoice_email" variant="outlined"
@@ -195,7 +199,7 @@ export default {
                  color="#d5d5d5"></v-btn>
         </v-col>
         <v-col color="#57ab27" class="next-btn" cols="2">
-          <v-btn  :text="$t('next')" variant="elevated" rounded="lg" type="submit" size="x-large"
+          <v-btn :text="$t('next')" variant="elevated" rounded="lg" type="submit" size="x-large"
                  color="#57ab27"></v-btn>
         </v-col>
       </v-row>
