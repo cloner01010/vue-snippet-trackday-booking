@@ -181,3 +181,7 @@ h4{
     align-items: center;
     height: 100vh;
 }
+.next-btn{
+    min-width: 150px;
+    height: var(--button-height);
+}

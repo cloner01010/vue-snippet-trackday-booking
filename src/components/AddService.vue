@@ -143,21 +143,18 @@ export default {
         <td>
           <v-container>
             <v-row align="center" justify="center">
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-btn :loading="serviceStore.isRemoving" @click="removeService(service.id)" variant="elevated"
                        rounded="lg" size="small" color="#d5d5d5" :disabled="service.amount <= 0">
                   <font-awesome-icon :icon="['fas', 'minus']" />
                 </v-btn>
               </v-col>
-              <v-col cols="3">
-                <v-text-field variant="solo" density="compact" bg-color="transparent"
-                              class="amount-container text-center " disabled flat>
-                  <template v-slot:label>
-                    <span class="amount mt-4">{{ service.amount }}</span>
-                  </template>
+              <v-col cols="4">
+                <v-text-field variant="solo"  bg-color="transparent"
+                              class="amount-container text-center" :model-value="service.amount" readonly flat>
                 </v-text-field>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="4">
                 <v-btn :loading="serviceStore.isAdding" @click="addService(service.id)" size="small" variant="elevated"
                        rounded="lg" color="#d5d5d5"
                        :disabled="service.availability <= 0">
@@ -188,7 +185,7 @@ export default {
 .amount {
   display: inline-block;
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   width: 100%;
   color: white;
 }

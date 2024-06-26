@@ -161,13 +161,13 @@ export default {
                       :model-value="wizardStore.getParticipant.invoice_address.email"></v-text-field>
       </v-col>
     </v-row>
-    <v-row v-if="action" justify="space-between" class="action-btn">
-      <v-col color="green" class="back-btn" cols="3">
-        <v-btn @click="previousStep()" :text="$t('back')" variant="elevated" rounded="lg" size="x-large"
+    <v-row v-if="action" justify="space-between">
+      <v-col color="green" class="back-btn" cols="2">
+        <v-btn @click="previousStep" :text="$t('back')" variant="elevated" rounded="lg" size="x-large"
                color="#d5d5d5"></v-btn>
       </v-col>
-      <v-col color="#57ab27" class="next-btn" cols="3">
-        <v-btn @click="nextStep" :text="$t('gotoPayment')" variant="elevated" rounded="lg" size="x-large"
+      <v-col color="#57ab27" class="next-btn" cols="4">
+        <v-btn @click="nextStep"  :text="$t('gotoPayment')" variant="elevated" rounded="lg" size="x-large"
                 color="#57ab27"></v-btn>
       </v-col>
     </v-row>

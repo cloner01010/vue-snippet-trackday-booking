@@ -18,6 +18,19 @@ const REDEEM_COUPON_MUTATION = gql`
     }
 `
 
+const CONFIRM_BOOKING_MUTATION=gql`
+    mutation confirmBooking($input: ConfirmBookingInput!) {
+        confirmBooking(input: $input) {
+            id
+            user {
+                id
+            }
+            booking {
+                id
+            }
+        }
+    }
+`
 
 const CREATE_PARTICIPANT_MUTATION = gql`
     mutation createParticipant($input: UserInput!) {
@@ -89,7 +102,15 @@ export const useWizardStore = defineStore('wizard', {
       booking_id: null,
       code: null
     },
-    participant: []
+    confirmBookingInput: {
+      id: null,
+      user_id: null,
+      participant_id: null,
+      booking_id: null,
+      status: "__BOOKED__"
+    },
+    participant: [],
+    isConfirming: false,
 
   }),
 
@@ -308,9 +329,31 @@ export const useWizardStore = defineStore('wizard', {
         throw error
       }
     },
+     async confirmBooking() {
+      this.isConfirming = true
+      const { mutate: confirm } = provideApolloClient(apolloClient)(() =>
+        useMutation(CONFIRM_BOOKING_MUTATION)
+      )
+      try {
+        const response = await confirm({
+          input: this.confirmBookingInput
+        })
+        if (response.data) {
+          this.isConfirming = false
+        } else {
+          this.isConfirming = false
+          throw new Error('No data returned from mutation')
+        }
+      } catch (error) {
+        this.isConfirming = false
+        console.error('Error sending contact info:', error)
+        throw error
+      }
+    },
 
 
-     fetchParticipant(trackday_item_id, participant_id, booking_id, user_id) {
+
+    fetchParticipant(trackday_item_id, participant_id, booking_id, user_id) {
       const { result, loading, error } = useQuery(
         gql`
             query getParticipant( $trackday_item_id: ID!,$participant_id: ID!,$booking_id: ID!,$user_id: ID!) {
